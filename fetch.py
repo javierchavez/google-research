@@ -34,14 +34,16 @@ for page in range(1, 3):
     
     # get all the apps in the page
     apps = ps.search('twitter', page).get_page()
-    for app in apps:
+    for app in apps[:1]:
 
         # use att
-        apps_array.append({ "search-term": 'twitter',
-                            "name": app.name,
-                            "package-id":app.app_id,
-                            "perm": app.get_permissions() })
-        
+        # apps_array.append({ "search-term": 'twitter',
+        #                     "name": app.name,
+        #                     "package-id":app.app_id,
+        #                     "perm": app.get_permissions() })
+
+        apps_array.append(app.to_dict())
+
         #print apps_array
             # f.write("\t" + apps.get_all_app_titles()[app].encode('ascii', 'ignore') + "(" + apps.get_all_app_ids(apps.get_all_app_urls())[app] + ")\n")
             # for x in apps.get_permissions(apps.get_all_app_urls()[app]):
