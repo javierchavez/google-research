@@ -1,0 +1,6 @@
+[submodule "app"]
+	path = app
+	url = git@github.com:javierchavez/Google-Play-Store.git
+[submodule "storeapi"]
+	path = storeapi
+	url = git@github.com:javierchavez/google-play-api.git
