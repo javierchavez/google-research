@@ -4,22 +4,6 @@ import os
 
 default_value = ''
 
-# cookie = {"SSID":os.getenv('SSID', default_value),
-#           "SID":os.getenv('SID', default_value),
-#           "SAPISID":os.getenv('SAPISID', default_value),
-#           "PREF":os.getenv('PREF', default_value),
-#           "PLAY_PREFS": os.getenv('PLAY_PREFS', default_value),
-#           "PLAY_ACTIVE_ACCOUNT": os.getenv('PLAY_ACTIVE_ACCOUNT', default_value),
-#           "NID": os.getenv('NID', default_value),
-#           "HSID": os.getenv('HSID', default_value),
-#           "APISID": os.getenv('APISID', default_value),
-#           "_gat": os.getenv('GAT', default_value),
-#           "_ga":os.getenv('_GA', default_value)
-#           }
-
-
-
-#token = os.getenv('TOKEN', default_value)
 
 cookie = {
     "PLAY_PREFS": os.getenv('PLAY_PREFS', default_value),
