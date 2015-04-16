@@ -40,7 +40,8 @@ for app in apps:
     apps_array.append(app.to_dict())
     break
         #print apps_array
-            # f.write("\t" + apps.get_all_app_titles()[app].encode('ascii', 'ignore') + "(" + apps.get_all_app_ids(apps.get_all_app_urls())[app] + ")\n")
+            # f.write("\t" + apps.get_all_app_titles()[app].encode('ascii', 'ignore')
+            #+ "(" + apps.get_all_app_ids(apps.get_all_app_urls())[app] + ")\n")
             # for x in apps.get_permissions(apps.get_all_app_urls()[app]):
                 # print "\t\t" + x
                 # f.write("\t\t" + x+"\n")
