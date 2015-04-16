@@ -1,4 +1,7 @@
-from storeapi import googleplaystore
+if googleplaystore:
+    reload(googleplaystore)
+else:
+    from storeapi import googleplaystore
 import json
 import os
 
@@ -25,7 +28,7 @@ apps_array = []
 #for page in range(1, 3):
     
     # get all the apps in the page
-apps = ps.search('twitter', 1).get_page()
+apps = ps.search('twitter', 1).get_page()#[1:-(len(l)-2)]
 for app in apps:
 
         # use att
@@ -45,8 +48,6 @@ for app in apps:
     # add to database
 
 print json.dumps(apps_array, indent=4)
-
-exit()
 
 
 
