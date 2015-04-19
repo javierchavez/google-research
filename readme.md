@@ -1,5 +1,11 @@
 # Comparing permissions #
 
+###Note:
+I am aware the file `all_by_term.json` is not valid json. I am using it to
+persist data as serialized objects to be read back into memory. The structure makes it
+easier to locate serch terms and the apps that belong, especially when
+trying to compute average hamming distance.
+
 ###Useage
 
 ######getting a single app
