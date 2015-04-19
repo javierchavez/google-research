@@ -47,5 +47,5 @@ print(hamming.hamming_dist(10))
 # tally all the permissions usage and map to names
 mapd_sums = hamming.map_names(hamming.sums())
 # show is nicely in json
-print(json.dumps(mapd_sums, indent=4))
+# print(json.dumps(mapd_sums, indent=4))
 
