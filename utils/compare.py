@@ -119,7 +119,8 @@ class Hamming(object):
         _xx = [x[self.key] for x in _sm]
         # generate combinations
         _c = itertools.combinations(_xx, 2)
-        # get number of combinations 
+        # get number of iterations it would take to
+        # produce combinations
         iterations = self._nCr(threshhold, 2)
         dist = 0.0
         for a in _c:
