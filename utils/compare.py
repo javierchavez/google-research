@@ -66,7 +66,13 @@ class Hamming(object):
 
     
     def bin_transform(self, iterable, key='', out_file=None):
-        """Take a collection of objects """
+        """Take a collection of objects. Changes iterable in place.
+        
+        Args:
+            key: needs to be a key of iterable[i] which
+            also needs to be iterable to be able to generate
+            a set of unique elements for all iterable[i][key]
+        """
         self.key = self.key or key
         # Get total permissions
         _all = set()
