@@ -37,6 +37,6 @@ for stat in sl[:10]:
 
 print('------------------')
 
-# top 10 searches that use of permissions mostly the same permissions
+# top 10 searches that use mostly the same permissions
 for stat in sl[-10:]:
     print(stat[0] + ": %.2f" % stat[1])
