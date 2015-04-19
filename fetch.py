@@ -2,8 +2,11 @@
 # catch the exception and import the module
 try:
     googleplaystore
+    compare
+    reload(compare)
     reload(googleplaystore)
 except NameError:
+    from utils import compare
     from storeapi import googleplaystore
 else:
     print("problem with gps module")
@@ -21,8 +24,9 @@ cookie = {
     "_ga":os.getenv('_GA', default_value)
 }
 
-# init google play store api
-ps = googleplaystore.PlayStore(cookie=cookie)
+# fp = open('dt.json', 'w')
+# # init google play store api
+# ps = googleplaystore.PlayStore(cookie=cookie)
 
 # # holder for app objects
 # apps_array = []
@@ -34,10 +38,31 @@ ps = googleplaystore.PlayStore(cookie=cookie)
 #     app.populate_fields()
 #     apps_array.append(app.to_dict())
 
-# # output as json
-# print json.dumps(apps_array, indent=4)
+# # # output as json
+# fp.write(json.dumps(apps_array, indent=4))
+# fp.close()
 
 
-app = ps.get_app('com.vivitylabs.android.braintrainer')
-app.populate_fields()
-print(json.dumps(app.to_dict(), indent=4))
+# app = ps.get_app('com.vivitylabs.android.braintrainer')
+# app.populate_fields()
+# print(json.dumps(app.to_dict(), indent=4))
+
+fp = open('dt.json', 'r')
+fp_out = open('dt_out.json', 'w')
+# parse json into object
+android_app_array = json.load(fp)
+# new hamming class
+hamming = compare.Hamming()
+# convert all the android app's permissions into a boolean list
+apps = hamming.bin_transform(android_app_array, 'permissions' , fp_out)
+# apps=android_app_array
+
+# generate the sums of all the permissions 
+sums = hamming.sums()
+
+# map the string value to the int bool value
+kv = hamming.map_names(android_app_array[0]['permissions'])
+
+# print(json.dumps(kv,indent=4))
+# print(json.dumps(sums,indent=4))
+print(hamming.hamming_dist(10))
