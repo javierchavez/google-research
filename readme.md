@@ -1,8 +1,8 @@
 # Comparing permissions #
 
-######Useage
+###Useage
 
-**getting a single app**
+######getting a single app
 
 This assumes you know the exact package id
 ```python
@@ -11,14 +11,14 @@ app.populate_fields()
 print(json.dumps(app.to_dict(), indent=4))
 ```
 
-**searching**
+######searching
 
 Example searching the playstore for 'twitter'
 ```python
 apps = ps.search('twitter', 1).get_results()
 ```
 
-**hamming distance**
+######hamming distance
 
 ```python
 # holder for app objects
