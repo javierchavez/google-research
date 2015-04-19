@@ -88,23 +88,25 @@ class Hamming(object):
             threshhold: is the number of objects to use
             when averaging the hamming distance.
         """
-        _sm = self._o_array[:threshhold]
-        dist = 0.0
-        iteration = 0
-        
-            
-        for i, app in enumerate(_sm):
-            for ii, appii in enumerate(_sm[i:]):
-                # since we are checking every object in different
-                # orders we dont want to check the same two objs
-                # twice we can check to see if they are the same
-                # in addition to removing elements 
-                if app['name'] != appii['name']:
-                    dist += self._hamming_distance(app[self.key],
-                                            appii[self.key])
-                    iteration += 1                     
+        if threshhold > len(self._o_array):
+            raise IndexError("Threshhold is too large")
 
-        return dist/iteration
+        # take threshhold from array 
+        _sm = self._o_array[:threshhold]
+
+        # get arrays        
+        _xx = [x[self.key] for x in _sm]
+        # generate combinations
+        _c = itertools.combinations(_xx, 2)
+        # get number of combinations 
+        iterations = self._nCr(threshhold, 2)
+        dist = 0.0
+        for a in _c:
+            dist += self._hamming_distance(a[0], a[1])
+
+        return dist/iterations
+  
+
             
             
             
