@@ -37,6 +37,16 @@ class Hamming(object):
 
     @staticmethod
     def _nCr(n,r):
+        """Number of iterations that will take place for
+        a given number of combinations and cardinality
+        
+        Args:
+            n: cardinality of set
+            r: number of combinations
+
+        return:
+           number of iterations
+        """
         f = math.factorial
         return f(n) / f(r) / f(n-r)
     
@@ -76,6 +86,9 @@ class Hamming(object):
         return iterable
 
     def sums(self):
+        """Sum of all x's 
+        This is a vertical sum in a matix
+        """
         totals = []
         for obj in self._o_array:
             totals.append(obj[self.key])
