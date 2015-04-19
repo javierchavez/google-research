@@ -71,7 +71,9 @@ class Hamming(object):
         Args:
             key: needs to be a key of iterable[i] which
             also needs to be iterable to be able to generate
-            a set of unique elements for all iterable[i][key]
+            a set of unique elements for all iterable[i][key].
+            For example: 
+                iterable[0]['key'] = ["val", "other"] 
         """
         self.key = self.key or key
         # Get total permissions
