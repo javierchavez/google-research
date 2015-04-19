@@ -13,7 +13,6 @@ class Hamming(object):
             tnp: total permissions in already sorted order
             it is best to have this class generate it for you.
         """
-        self._hs = None
         # _all holds all permissions in string
         self._all = tnp
         # all x will be motified by bin_transform 
@@ -75,7 +74,7 @@ class Hamming(object):
             For example: 
                 iterable[0]['key'] = ["val", "other"] 
         """
-        self.key = self.key or key
+        self.key = key or self.key
         # Get total permissions
         _all = set()
         for obj in iterable:
@@ -87,7 +86,7 @@ class Hamming(object):
         # NOTE: this is manipulating the arguments VALUE
         for obj in iterable:
             # bool transform
-            obj[key] = self._overlay(obj[self.key])
+            obj[self.key] = self._overlay(obj[self.key])
 
         self._o_array = iterable
         # Not needed since the iterable is being changed!!!
