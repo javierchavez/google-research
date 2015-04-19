@@ -31,6 +31,12 @@ for key in android_apps.keys():
 
 sl = sorted(stats.items(), key=operator.itemgetter(1), reverse=True)
 
-# top 10 search that show most sparatic use of permissions
+# top 10 searches that show most sporadic use of permissions
 for stat in sl[:10]:
+    print(stat[0] + ": %.2f" % stat[1])
+
+print('------------------')
+
+# top 10 searches that use of permissions mostly the same permissions
+for stat in sl[-10:]:
     print(stat[0] + ": %.2f" % stat[1])
