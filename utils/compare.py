@@ -2,8 +2,11 @@ import itertools
 import math
 import json
 import collections
+import logging
 from sortedcontainers import SortedList, SortedSet, SortedDict
 
+__author__ = 'Javier Chavez'
+__email__ = 'javierc@cs.unm.edu'
 
 class Hamming(object):
 
@@ -14,14 +17,13 @@ class Hamming(object):
             it is best to have this class generate it for you.
         """
         # _all holds all permissions in string
-        self._all = tnp
-        # all x will be motified by bin_transform 
-        self._o_array = iterable
+        self._all = tnp or set()
+
         # key assciociated to hamming
-        self.key = key
+        self._set_key(key)
         
         if key is not None and iterable is not None:
-            self.bin_transform(iterable, key)
+            self.bin_transform(iterable)
 
     @staticmethod
     def _sum_cols(m):
@@ -48,6 +50,24 @@ class Hamming(object):
         """
         f = math.factorial
         return f(n) / f(r) / f(n-r)
+
+    def _set_key(self, key):
+        if key is None and self.key is None:
+            # iterable will be treated as iterable[i]
+            # e.g. ["elem", "elem", "elem"]
+            raise Exception("Not yet implemented.")
+            # logging.info('Assuming matrix')
+        elif key is not None:
+            # iterable will be treated as iterable[i]['key']
+            # e.g. [{'key':[]}, {'key':[]}, {'key':[]}]
+            self.key = key
+        elif key is None and self.key is not None:
+            # if the key is already set and we are passing
+            # none then ignore it.
+            pass
+        else:
+            logging.warning("key is in unknown state")
+            
     
     def _overlay(self, values_array):
         """overlay is the same as a boolean meatrix data structure
@@ -56,6 +76,8 @@ class Hamming(object):
         """
         return [1 if x in values_array else 0 for x in self._all ]
 
+    def get_permission_list(self):
+        return [p for p in self._all]
     
     def map_names(self, arr):
         """Maps HammingSet to its named key"""
@@ -63,8 +85,27 @@ class Hamming(object):
             raise Exception("bin_transform needs to run first")
         return SortedDict(zip(self._all, arr))
 
+
+    def accumulate(self, iterable, key=None):
+        """Accumulate permissions and, transform 
+           
+        Args:
+            key: needs to be a key of iterable[i] which
+            also needs to be iterable to be able to generate
+            a set of unique elements for all iterable[i][key].
+            For example: 
+                iterable[0]['key'] = ["val", "other"] 
+        """        
+        self._set_key(key)
+        
+        for obj in iterable:
+            self._all = self._all | set(obj[self.key])
+
+        # Set (defined order)
+        self._all = SortedSet(self._all)
+        
     
-    def bin_transform(self, iterable, key='', out_file=None):
+    def bin_transform(self, iterable, key=None, out_file=None):
         """Take a collection of objects. Changes iterable in place.
         
         Args:
@@ -74,58 +115,78 @@ class Hamming(object):
             For example: 
                 iterable[0]['key'] = ["val", "other"] 
         """
-        self.key = key or self.key
-        # Get total permissions
-        _all = set()
-        for obj in iterable:
-            _all = set(obj[self.key]) | _all
+        self._set_key(key)
+        if not self._all :
+            # Get total permissions
+            _all = set()
+            for obj in iterable:
+                _all = set(obj[self.key]) | _all
+                
+            # Create a Set (defined order)
+            self._all = SortedSet(_all)
+
+        return self._bin_t(iterable)
+
     
-        # Create a Set (defined order)
-        self._all = SortedSet(_all)
-        
-        # NOTE: this is manipulating the arguments VALUE
+    def _bin_t(self, iterable):
+        # NOTE: this is manipulating the arguments VALUE.
+        # not needed but realize a deep copy may be needed
+        # inorder to preserve iterable
         for obj in iterable:
             # bool transform
             obj[self.key] = self._overlay(obj[self.key])
 
-        self._o_array = iterable
         # Not needed since the iterable is being changed!!!
         return iterable
 
-    def sums(self):
-        """Sum of all x's 
-        This is a vertical sum in a matix
+        
+    def sums(self, iterable, key=None):
+        """Sum of all m's (m by n matrix). vertical sum 
+        
+        Returns:
+            A 1 by n matrix such that each column is the sum 
+            of all previous rows in that column. For example
+            sum([[1, 2], [2, 3]])
+            = [3, 5]
         """
+        self._set_key(key)
+        
         totals = []
-        for obj in self._o_array:
+        for obj in iterable:
             totals.append(obj[self.key])
         return self._sum_cols(totals)
 
-    def hamming_dist(self, threshhold):
+    def hamming_dist(self, iterable, threshhold, key=None):
         """Get the hamming distance of objects
         
         Args:
             threshhold: is the number of objects to use
             when averaging the hamming distance.
         """
-        if threshhold > len(self._o_array):
+        self._set_key(key)
+        
+        if threshhold > len(iterable):
             raise IndexError("Threshhold is too large")
 
         # take threshhold from array 
-        _sm = self._o_array[:threshhold]
+        _sm = iterable[:threshhold]
 
         # get arrays        
         _xx = [x[self.key] for x in _sm]
+
         # generate combinations
         _c = itertools.combinations(_xx, 2)
-        # get number of iterations it would take to
-        # produce combinations
-        iterations = self._nCr(threshhold, 2)
+        # get number of combinations
+        # iterations = self._nCr(threshhold, 2)
+        
         dist = 0.0
+        # more efficient to just add 1
+        list_len = 0
+        
         for a in _c:
             dist += self._hamming_distance(a[0], a[1])
-
-        return dist/iterations
+            list_len += 1
+        return dist/list_len
   
 
             
