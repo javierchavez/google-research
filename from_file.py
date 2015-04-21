@@ -45,7 +45,7 @@ for search_term in android_apps.keys():
 stats = {}
 for search_term in android_apps.keys():
     stats[search_term] = hamming.hamming_dist(android_apps[search_term],
-                                              10)
+                                              threshhold=None)
     
 sl = sorted(stats.items(), key=operator.itemgetter(1), reverse=True)
 
@@ -56,7 +56,7 @@ for stat in sl[:10]:
 print('------------------')
 
 # top 10 searches that use mostly the same permissions
-for stat in sl[-10:]:
+for stat in sl:
     print(stat[0] + ": %.2f" % stat[1])
 
 
@@ -65,6 +65,7 @@ acc = []
 for search_term in android_apps.keys():
     for app in android_apps[search_term]:
         acc.append(app)
+
 
 # get the sums of all the permissions
 mapd_sums = hamming.map_names(hamming.sums(acc, key='permissions'))        

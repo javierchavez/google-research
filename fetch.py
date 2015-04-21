@@ -47,8 +47,8 @@ for app in apps:
 # turn the permissions into boolean matrix 
 hamming.bin_transform(apps_array)
 
-# show the hamming distance for 10 apps
-print(hamming.hamming_dist(apps_array, 10))
+# show the hamming distance for n apps
+print(hamming.hamming_dist(apps_array, 20))
 # tally all the permissions usage and map to names
 mapd_sums = hamming.map_names(hamming.sums(apps_array))
 # show is nicely in json
