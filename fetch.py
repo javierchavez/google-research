@@ -42,6 +42,7 @@ apps = ps.search('google', 1).get_results()
 for app in apps:
     app.populate_fields()
     apps_array.append(app.to_dict())
+    hamming.accumulate([app])
     # print app.to_dict()['permissions']
     
 # turn the permissions into boolean matrix 
