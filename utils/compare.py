@@ -22,13 +22,12 @@ class Hamming(object):
         # key assciociated to hamming
         self._set_key(key)
         
-        if key is not None and iterable is not None:
-            self.bin_transform(iterable)
 
     @staticmethod
     def _sum_cols(m):
         """Sum of all the columns in a matrix"""
-        return [sum(col) for col in zip(*m)]
+        #return [sum(col) for col in zip(*m)]
+        return itertools.imap(sum, itertools.izip(*m))
 
     @staticmethod
     def _hamming_distance(s1, s2):
@@ -52,6 +51,7 @@ class Hamming(object):
         return f(n) / f(r) / f(n-r)
 
     def _set_key(self, key):
+        """Set the key to be used when iterating though iterable"""
         if key is None and self.key is None:
             # iterable will be treated as iterable[i]
             # e.g. ["elem", "elem", "elem"]
@@ -74,6 +74,9 @@ class Hamming(object):
         every value is checked and outputted in 1d list
         which a[i] represents presents of x 
         """
+        # if not values_array:
+        #     return [ 0 for x in self._all]
+        
         return [1 if x in values_array else 0 for x in self._all ]
 
     def get_permission_list(self):
@@ -82,7 +85,7 @@ class Hamming(object):
     def map_names(self, arr):
         """Maps HammingSet to its named key"""
         if self._all is None:
-            raise Exception("bin_transform needs to run first")
+            raise Exception("Class does not contian permissions")
         return SortedDict(zip(self._all, arr))
 
 
@@ -168,9 +171,11 @@ class Hamming(object):
         if threshhold > len(iterable):
             raise IndexError("Threshhold is too large")
 
-        # take threshhold from array 
-        _sm = iterable[:threshhold]
-
+        _sm = iterable
+        if not threshhold is None:
+            # take threshhold from array 
+            _sm = _sm[:threshhold]
+        
         # get arrays        
         _xx = [x[self.key] for x in _sm]
 
