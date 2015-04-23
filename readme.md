@@ -53,7 +53,7 @@ mapd_sums = hamming.map_names(hamming.sums())
 print(json.dumps(mapd_sums, indent=4))
 ```
 
-**Note to myself.(and others?)**
+**Note to myself (and others).**
 somthing interesting about counting permissions, I ran into a huge 'bug'
 where I thought my program was missing permissions and failing to
 account for a permission in a given app. for some reason you, like I
