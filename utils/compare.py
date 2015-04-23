@@ -4,6 +4,10 @@ import json
 import collections
 import logging
 from sortedcontainers import SortedList, SortedSet, SortedDict
+import operator
+import copy
+from collections import Counter
+
 
 __author__ = 'Javier Chavez'
 __email__ = 'javierc@cs.unm.edu'
@@ -17,22 +21,20 @@ class Hamming(object):
             it is best to have this class generate it for you.
         """
         # _all holds all permissions in string
-        self._all = tnp or set()
+        self._all = tnp or set([])
 
         # key assciociated to hamming
         self._set_key(key)
-        
 
+        
     @staticmethod
     def _sum_cols(m):
         """Sum of all the columns in a matrix"""
-        #return [sum(col) for col in zip(*m)]
         return itertools.imap(sum, itertools.izip(*m))
 
     @staticmethod
     def _hamming_distance(s1, s2):
         # carinality of sets must be equal
-        assert len(s1) == len(s2)
         return sum(ch1 != ch2 for ch1, ch2 in zip(s1, s2))
 
     @staticmethod
@@ -73,13 +75,12 @@ class Hamming(object):
         """overlay is the same as a boolean meatrix data structure
         every value is checked and outputted in 1d list
         which a[i] represents presents of x 
-        """
-        # if not values_array:
-        #     return [ 0 for x in self._all]
-        
-        return [1 if x in values_array else 0 for x in self._all ]
+        """        
+        #return ''.join('1' if x in values_array else '0' for x in self._all)
+        return [1 if x in values_array else 0 for x in self._all]
 
-    def get_permission_list(self):
+    
+    def get_list(self):
         return [p for p in self._all]
     
     def map_names(self, arr):
@@ -101,15 +102,12 @@ class Hamming(object):
         """        
         self._set_key(key)
         
-        for obj in iterable:
-            self._all = self._all | set(obj[self.key])
-
-        # Set (defined order)
-        self._all = SortedSet(self._all)
+        tmp = set.union(*(set(x[self.key]) for x in iterable))
+        self._all = SortedSet(self._all.union(tmp))
         
     
     def bin_transform(self, iterable, key=None, out_file=None):
-        """Take a collection of objects. Changes iterable in place.
+        """Take a collection of objects. Returns a new iterable.
         
         Args:
             key: needs to be a key of iterable[i] which
@@ -119,15 +117,21 @@ class Hamming(object):
                 iterable[0]['key'] = ["val", "other"] 
         """
         self._set_key(key)
-        if not self._all :
-            # Get total permissions
-            _all = set()
-            for obj in iterable:
-                _all = set(obj[self.key]) | _all
-                
-            # Create a Set (defined order)
-            self._all = SortedSet(_all)
+        che = copy.deepcopy(iterable)
+        
+        return self._bin_t(che)
 
+    def bin_transform_inplace(self, iterable, key=None, out_file=None):
+        """Take a collection of objects. Changes iterable in place.
+        
+        Args:
+            key: needs to be a key of iterable[i] which
+            also needs to be iterable to be able to generate
+            a set of unique elements for all iterable[i][key].
+            For example: 
+                iterable[0]['key'] = ["val", "other"] 
+        """
+        # not needed as iterable will be changed
         return self._bin_t(iterable)
 
     
@@ -144,7 +148,10 @@ class Hamming(object):
 
         
     def sums(self, iterable, key=None):
-        """Sum of all m's (m by n matrix). vertical sum 
+        """Sum of all m's (m by n matrix). aka vertical sum. This iters
+        over generated boolean matricies and counts... if you sum your
+        objects and this number is different (esp. less) then you have
+        duplicate items.
         
         Returns:
             A 1 by n matrix such that each column is the sum 
@@ -155,8 +162,10 @@ class Hamming(object):
         self._set_key(key)
         
         totals = []
+        # get all the objects and create matrix
         for obj in iterable:
             totals.append(obj[self.key])
+        
         return self._sum_cols(totals)
 
     def hamming_dist(self, iterable, threshhold, key=None):
