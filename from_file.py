@@ -38,13 +38,14 @@ for search_term in android_apps.keys():
 # print(json.dumps(hamming.get_permission_list(), indent=4))
 
 # now transform each permission
+trans_apps = {}
 for search_term in android_apps.keys():
-    hamming.bin_transform(android_apps[search_term])
+    trans_apps[search_term] = hamming.bin_transform(android_apps[search_term])
 
 # compute the avg hamming distance for any given search term
 stats = {}
-for search_term in android_apps.keys():
-    stats[search_term] = hamming.hamming_dist(android_apps[search_term],
+for search_term in trans_apps.keys():
+    stats[search_term] = hamming.hamming_dist(trans_apps[search_term],
                                               threshhold=None)
     
 sl = sorted(stats.items(), key=operator.itemgetter(1), reverse=True)
@@ -53,22 +54,14 @@ sl = sorted(stats.items(), key=operator.itemgetter(1), reverse=True)
 for stat in sl[:10]:
     print(stat[0] + ": %.2f" % stat[1])
 
-print('------------------')
 
-# top 10 searches that use mostly the same permissions
-for stat in sl:
-    print(stat[0] + ": %.2f" % stat[1])
-
-
-# create a list of all apps....
+# create a list of all apps (remove serch-terms)....
 acc = []
-for search_term in android_apps.keys():
-    for app in android_apps[search_term]:
+for search_term in trans_apps.keys():
+    for app in trans_apps[search_term]:
         acc.append(app)
 
 
 # get the sums of all the permissions
-mapd_sums = hamming.map_names(hamming.sums(acc, key='permissions'))        
-
-# show is nicely in json
-print(json.dumps(mapd_sums, indent=4))
+mapd_sums = hamming.map_names(hamming.sums(acc, key='permissions'))
+print json.dumps(mapd_sums, indent=4)

@@ -46,7 +46,7 @@ for app in apps:
     # print app.to_dict()['permissions']
     
 # turn the permissions into boolean matrix 
-hamming.bin_transform(apps_array)
+hamming.bin_transform_inplace(apps_array)
 
 # show the hamming distance for n apps
 print(hamming.hamming_dist(apps_array, 20))
