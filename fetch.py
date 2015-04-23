@@ -31,7 +31,7 @@ cookie = {
 # init google play store api
 ps = googleplaystore.PlayStore(cookie=cookie)
 # init hamming 
-hamming = compare.Hamming(key='permissions')
+hamming = compare.Hamming()
 
 # holder for app objects
 apps_array = []
@@ -43,10 +43,10 @@ for app in apps:
     app.populate_fields()
     apps_array.append(app.to_dict())
     hamming.accumulate([app])
-    # print app.to_dict()['permissions']
+
     
 # turn the permissions into boolean matrix 
-hamming.bin_transform_inplace(apps_array)
+hamming.bin_transform_inplace(apps_array, key='permissions')
 
 # show the hamming distance for n apps
 print(hamming.hamming_dist(apps_array, 20))

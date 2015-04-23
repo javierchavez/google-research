@@ -30,17 +30,20 @@ apps = ps.search('twitter', 1).get_results()
 # holder for app objects
 apps_array = []
 # search and get the results
-apps = ps.search('twitter', 1).get_results()
+apps = ps.search('google', 1).get_results()
 # iterate through the apps populate
 # populate apps fields and convert to dict
 for app in apps:
     app.populate_fields()
     apps_array.append(app.to_dict())
+    hamming.accumulate([app])
 
+    
 # turn the permissions into boolean matrix 
-hamming.bin_transform(apps_array, 'permissions')
-# show the hamming distance for 10 apps
-print(hamming.hamming_dist(10))
+hamming.bin_transform_inplace(apps_array, key='permissions')
+
+# show the hamming distance for n apps
+print(hamming.hamming_dist(apps_array, 20))
 ```
 
 ######hamming sum with keys
