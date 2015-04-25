@@ -3,6 +3,12 @@ import unittest
 import collections
 from utils import compare
 
+
+__author__ = 'Javier Chavez'
+__email__ = 'javierc@cs.unm.edu'
+
+
+
 class CompareTestCase(unittest.TestCase):
     """Tests for `compare.py`."""
 
