@@ -31,17 +31,19 @@ cookie = {
 # init google play store api
 ps = googleplaystore.PlayStore(cookie=cookie)
 # init hamming 
-hamming = compare.Hamming()
+hamming = compare.Hamming(key='permissions')
 
 # holder for app objects
 apps_array = []
 # search and get the results
 apps = ps.search('google', 1).get_results()
 # iterate through the apps populate
-# populate apps fields and convert to dict           
+# populate apps fields and convert to dict
+
 for app in apps:
     app.populate_fields()
     apps_array.append(app.to_dict())
+    print(apps_array)
     hamming.accumulate([app])
 
     
