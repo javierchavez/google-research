@@ -3,6 +3,7 @@
 testing/
 utils/*.pyc
 \#*#
+*.out.json
 
 # OS generated files #
 ######################
