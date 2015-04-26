@@ -30,7 +30,7 @@ class Hamming(object):
     @staticmethod
     def _sum_cols(m):
         """Sum of all the columns in a matrix"""
-        return itertools.imap(sum, itertools.izip(*m))
+        return [sum(x) for x in zip(*m)]
 
     @staticmethod
     def _hamming_distance(s1, s2):
@@ -177,7 +177,9 @@ class Hamming(object):
         """
         self._set_key(key)
         
-        if threshhold > len(iterable):
+        if threshhold == None:
+            threshhold = len(iterable)
+        elif threshhold > len(iterable):
             raise IndexError("Threshhold is too large")
 
         _sm = iterable
