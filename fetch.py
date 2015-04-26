@@ -43,7 +43,6 @@ apps = ps.search('google', 1).get_results()
 for app in apps:
     app.populate_fields()
     apps_array.append(app.to_dict())
-    print(apps_array)
     hamming.accumulate([app])
 
     
