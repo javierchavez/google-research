@@ -1,5 +1,7 @@
 # Comparing permissions #
 
+Uses **Python 3.4**
+
 ###Note:
 I am aware the file `all_by_term.json` is not valid json. I am using it to
 persist data as serialized objects to be read back into memory. The structure makes it
