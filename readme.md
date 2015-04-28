@@ -15,6 +15,9 @@ trying to compute average hamming distance.
 
 This assumes you know the exact package id
 ```python
+# init google play store api
+ps = googleplaystore.PlayStore(cookie=cookie)
+# id
 app = ps.get_app('com.some.name')
 # suggest leaving out reviews its a lot of data
 app.populate_fields(exclude=['reviews'])
@@ -31,6 +34,8 @@ apps = ps.search('twitter', 1).get_results()
 ######hamming distance
 
 ```python
+# init hamming 
+hamming = compare.Hamming(key='permissions')
 # holder for app objects
 apps_array = []
 # search and get the results
