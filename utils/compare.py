@@ -1,12 +1,10 @@
 import itertools
 import math
-import json
-import collections
 import logging
-from sortedcontainers import SortedList, SortedSet, SortedDict
-import operator
+from sortedcontainers import SortedSet, SortedDict
 import copy
-from collections import Counter
+# Debating on using counter
+# from collections import Counter
 
 
 __author__ = 'Javier Chavez'
@@ -22,11 +20,11 @@ class Hamming(object):
         """
         # _all holds all permissions in string
         self._all = tnp or set([])
-
+        self.key = None
         # key assciociated to hamming
         self._set_key(key)
 
-        
+
     @staticmethod
     def _sum_cols(m):
         """Sum of all the columns in a matrix"""
@@ -38,7 +36,7 @@ class Hamming(object):
         return sum(ch1 != ch2 for ch1, ch2 in zip(s1, s2))
 
     @staticmethod
-    def _nCr(n,r):
+    def _nCr(n, r):
         """Number of iterations that will take place for
         a given number of combinations and cardinality
         
