@@ -3,6 +3,7 @@
 Uses **Python 3.4**
 
 ###Note:
+
 I am aware the file `all_by_term.json` is not valid json. I am using it to
 persist data as serialized objects to be read back into memory. The structure makes it
 easier to locate serch terms and the apps that belong, especially when
@@ -15,7 +16,8 @@ trying to compute average hamming distance.
 This assumes you know the exact package id
 ```python
 app = ps.get_app('com.some.name')
-app.populate_fields()
+# suggest leaving out reviews its a lot of data
+app.populate_fields(exclude=['reviews'])
 print(json.dumps(app.to_dict(), indent=4))
 ```
 
@@ -36,7 +38,7 @@ apps = ps.search('google', 1).get_results()
 # iterate through the apps populate
 # populate apps fields and convert to dict
 for app in apps:
-    app.populate_fields()
+    app.populate_fields(exclude=['reviews'])
     apps_array.append(app.to_dict())
     hamming.accumulate([app])
 
@@ -51,6 +53,7 @@ print(hamming.hamming_dist(apps_array, 20))
 ######hamming sum with keys
 
 cont. from above
+
 ```python
 # tally all the permissions usage and map to names
 mapd_sums = hamming.map_names(hamming.sums())
