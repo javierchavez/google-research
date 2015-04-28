@@ -67,8 +67,8 @@ print(json.dumps(mapd_sums, indent=4))
 ```
 
 **Note to myself (and others).**
-somthing interesting about counting permissions, I ran into a huge 'bug'
+
+Somthing interesting about counting permissions... I ran into a huge 'bug'
 where I thought my program was missing permissions and failing to
-account for a permission in a given app. for some reason you, like I
-did, may have duplicate permissions with in the app instance, it caused me to go
+account for a permissions. Check your apps json *FIRST* it likely has duplicate permissions, it caused me to go
 insane thinking my `Hamming class` was garbage.
