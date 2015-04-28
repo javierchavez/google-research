@@ -36,16 +36,18 @@ hamming = compare.Hamming(key='permissions')
 # holder for app objects
 apps_array = []
 # search and get the results
-apps = ps.search('google', 1).get_results()
+apps = ps.search('twitter', 1).get_results()
 # iterate through the apps populate
 # populate apps fields and convert to dict
 
 for app in apps:
-    app.populate_fields()
+    app.populate_fields(exclude=['reviews'])
     apps_array.append(app.to_dict())
     hamming.accumulate([app])
 
-    
+
+
+
 # turn the permissions into boolean matrix 
 hamming.bin_transform_inplace(apps_array, key='permissions')
 

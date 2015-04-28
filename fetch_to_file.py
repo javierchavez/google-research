@@ -38,7 +38,7 @@ apps = ps.search(search_term, 1).get_results()
 # populate apps fields and convert to dict
 
 for app in apps:
-    app.populate_fields()
+    app.populate_fields(exclude=['reviews'])
     apps_array.append(app.to_dict())
 
 
