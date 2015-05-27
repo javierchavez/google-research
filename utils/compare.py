@@ -39,7 +39,7 @@ class Hamming(object):
     def _nCr(n, r):
         """Number of iterations that will take place for
         a given number of combinations and cardinality
-        
+
         Args:
             n: cardinality of set
             r: number of combinations
@@ -67,20 +67,20 @@ class Hamming(object):
             pass
         else:
             logging.warning("key is in unknown state")
-            
-    
+
+
     def _overlay(self, values_array):
         """overlay is the same as a boolean meatrix data structure
         every value is checked and outputted in 1d list
-        which a[i] represents presents of x 
-        """        
+        which a[i] represents presents of x
+        """
         #return ''.join('1' if x in values_array else '0' for x in self._all)
         return [1 if x in values_array else 0 for x in self._all]
 
-    
+
     def get_list(self):
         return [p for p in self._all]
-    
+
     def map_names(self, arr):
         """Maps HammingSet to its named key"""
         if self._all is None:
@@ -89,50 +89,50 @@ class Hamming(object):
 
 
     def accumulate(self, iterable, key=None):
-        """Accumulate permissions and, transform 
-           
+        """Accumulate permissions and, transform
+
         Args:
             key: needs to be a key of iterable[i] which
             also needs to be iterable to be able to generate
             a set of unique elements for all iterable[i][key].
-            For example: 
-                iterable[0]['key'] = ["val", "other"] 
-        """        
+            For example:
+                iterable[0]['key'] = ["val", "other"]
+        """
         self._set_key(key)
-        
+
         tmp = set.union(*(set(x[self.key]) for x in iterable))
         self._all = SortedSet(self._all.union(tmp))
-        
-    
+
+
     def bin_transform(self, iterable, key=None, out_file=None):
         """Take a collection of objects. Returns a new iterable.
-        
+
         Args:
             key: needs to be a key of iterable[i] which
             also needs to be iterable to be able to generate
             a set of unique elements for all iterable[i][key].
-            For example: 
-                iterable[0]['key'] = ["val", "other"] 
+            For example:
+                iterable[0]['key'] = ["val", "other"]
         """
         self._set_key(key)
         che = copy.deepcopy(iterable)
-        
+
         return self._bin_t(che)
 
     def bin_transform_inplace(self, iterable, key=None, out_file=None):
         """Take a collection of objects. Changes iterable in place.
-        
+
         Args:
             key: needs to be a key of iterable[i] which
             also needs to be iterable to be able to generate
             a set of unique elements for all iterable[i][key].
-            For example: 
-                iterable[0]['key'] = ["val", "other"] 
+            For example:
+                iterable[0]['key'] = ["val", "other"]
         """
         # not needed as iterable will be changed
         return self._bin_t(iterable)
 
-    
+
     def _bin_t(self, iterable):
         # NOTE: this is manipulating the arguments VALUE.
         # not needed but realize a deep copy may be needed
@@ -144,37 +144,37 @@ class Hamming(object):
         # Not needed since the iterable is being changed!!!
         return iterable
 
-        
+
     def sums(self, iterable, key=None):
         """Sum of all m's (m by n matrix). aka vertical sum. This iters
         over generated boolean matricies and counts... if you sum your
         objects and this number is different (esp. less) then you have
         duplicate items.
-        
+
         Returns:
-            A 1 by n matrix such that each column is the sum 
+            A 1 by n matrix such that each column is the sum
             of all previous rows in that column. For example
             sum([[1, 2], [2, 3]])
             = [3, 5]
         """
         self._set_key(key)
-        
+
         totals = []
         # get all the objects and create matrix
         for obj in iterable:
             totals.append(obj[self.key])
-        
+
         return self._sum_cols(totals)
 
     def hamming_dist(self, iterable, threshhold, key=None):
         """Get the hamming distance of objects
-        
+
         Args:
             threshhold: is the number of objects to use
             when averaging the hamming distance.
         """
         self._set_key(key)
-        
+
         if threshhold == None:
             threshhold = len(iterable)
         elif threshhold > len(iterable):
@@ -182,28 +182,22 @@ class Hamming(object):
 
         _sm = iterable
         if not threshhold is None:
-            # take threshhold from array 
+            # take threshhold from array
             _sm = _sm[:threshhold]
-        
-        # get arrays        
+
+        # get arrays
         _xx = [x[self.key] for x in _sm]
 
         # generate combinations
         _c = itertools.combinations(_xx, 2)
         # get number of combinations
         # iterations = self._nCr(threshhold, 2)
-        
+
         dist = 0.0
         # more efficient to just add 1
         list_len = 0
-        
+
         for a in _c:
             dist += self._hamming_distance(a[0], a[1])
             list_len += 1
         return dist/list_len
-  
-
-            
-            
-            
-    
