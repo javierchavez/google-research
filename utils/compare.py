@@ -3,12 +3,16 @@ import math
 import logging
 from sortedcontainers import SortedSet, SortedDict
 import copy
-# Debating on using counter
-# from collections import Counter
 
 
 __author__ = 'Javier Chavez'
 __email__ = 'javierc@cs.unm.edu'
+
+"""Compare data using the Hamming algo.
+
+Hamming class tries to be generic it takes a list of dictionaries, you supply the key
+to use to retrieve data from that dictionary. 
+"""
 
 class Hamming(object):
 
