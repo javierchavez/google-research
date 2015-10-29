@@ -1,3 +1,2 @@
-beautifulsoup4==4.3.2
-Django==1.8
-sortedcontainers==0.9.5
+virtualenv==13.1.2
+wheel==0.26.0
