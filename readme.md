@@ -1,6 +1,27 @@
 # Comparing permissions #
 
-Uses **Python 3.4**
+
+###Getting code to work
+At the time I wrote this I used **Python 3.4**. I am unsure of support
+for 2.x. I would highly suggest a python virtual environment.
+
+Get the code
+```bash
+git clone https://github.com/javierchavez/google-research.git
+cd google-research
+```
+
+Get the submodule's code
+```bash
+git submodule init
+git submodule update
+```
+
+Install the dependencies
+```bash
+pip install -r requirements.txt
+```
+
 
 ###Note:
 
